@@ -7,8 +7,30 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  lint-test:
     runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:10.0
+        ports: ['5432:5432']
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ""
+          POSTGRES_DB: resurrect_test
+        # needed because the postgres container does not provide a healthcheck
+        # tmpfs makes DB faster by using RAM
+        options: >-
+          --mount type=tmpfs,destination=/var/lib/postgresql/data
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      RAILS_ENV: test
+      PGHOST: localhost
+      PGUSER: postgres
 
     steps:
       - uses: actions/checkout@v2
@@ -20,4 +42,10 @@ jobs:
 
       - name: Check Linting and Formatting
         run: bundle exec rake lint:check
+
+      - name: Build and run tests
+        run: |
+          sudo apt-get -yqq install libpq-dev
+          bundle exec rails db:prepare
+          bundle exec rspec 
 
