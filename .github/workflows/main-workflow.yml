@@ -45,7 +45,6 @@ jobs:
 
       - name: Build and run tests
         run: |
-          sudo apt-get -yqq install libpq-dev
           bundle exec rails db:prepare
           bundle exec rspec 
 
