@@ -1,4 +1,4 @@
-class UserResource < JSONAPI::Resource
+class UserResource < BaseResource
   attributes :email, :password, :password_confirmation
 
   def fetchable_fields
