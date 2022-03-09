@@ -28,47 +28,34 @@ RSpec.describe User, type: :model do
   end
 
   describe '#password' do
-    it 'is invalid if it has a length less than 8 characters' do
-      user.password = '1234567'
-
+    def expect_password_invalid_with_error(password:, error_message:)
+      user.password = password
       expect(user).to be_invalid
       expect(user.errors).to have_key(:password)
-      expect(user.errors[:password]).to include('must be at least 8 characters long')
+      expect(user.errors[:password]).to include(error_message)
+    end
+
+    it 'is invalid if it has a length less than 8 characters' do
+      expect_password_invalid_with_error password: '1234567', error_message: 'must be at least 8 characters long'
     end
 
     it "is invalid if it doesn't include at least one number" do
-      user.password = 'abcdefgh'
-
-      expect(user).to be_invalid
-      expect(user.errors).to have_key(:password)
-      expect(user.errors[:password]).to include('must have at least one number')
+      expect_password_invalid_with_error password: 'abcdefgh', error_message: 'must have at least one number'
     end
 
     it "is invalid if it doesn't include at least one lowercase letter" do
-      user.password = 'ABCDEFG8'
-
-      expect(user).to be_invalid
-      expect(user.errors).to have_key(:password)
-      expect(user.errors[:password]).to include('must have at least one lowercase letter')
+      expect_password_invalid_with_error password: 'ABCDEFG8', error_message: 'must have at least one lowercase letter'
     end
 
     it "is invalid if it doesn't include at least one uppercase letter" do
-      user.password = 'abcdefg8'
-
-      expect(user).to be_invalid
-      expect(user.errors).to have_key(:password)
-      expect(user.errors[:password]).to include('must have at least one uppercase letter')
+      expect_password_invalid_with_error password: 'abcdefg8', error_message: 'must have at least one uppercase letter'
     end
 
     it "is invalid if it doesn't include at least one symbol" do
-      user.password = 'ABCDEFg8'
-
-      expect(user).to be_invalid
-      expect(user.errors).to have_key(:password)
-      expect(user.errors[:password]).to include('must have at least one symbol')
+      expect_password_invalid_with_error password: 'ABCDEFg8', error_message: 'must have at least one symbol'
     end
 
-    it 'is valid if it is at least 8 chars long and include at least one number, one lowercase letter, one uppercase letter and a symbol' do
+    it 'is valid if it fulfills all the requirements and the password_confirmation matches' do
       user.password = 'ABCDEFg8$'
       user.password_confirmation = 'ABCDEFg8$'
 
