@@ -13,6 +13,8 @@ class User < ApplicationRecord
   validates :password_confirmation, presence: true, on: :create
 
   def password_is_strong
+    return unless password
+
     errors.add(:password, 'must be at least 8 characters long') unless password.length >= 8
 
     PASSWORD_HAS_AT_LEAST_ONE.each do |required_character, regex|

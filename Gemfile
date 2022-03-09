@@ -47,6 +47,8 @@ group :development, :test do
   gem 'rubocop-rspec', require: false
 
   gem 'rspec-rails', '~> 5.0.0'
+
+  gem 'fabrication'
 end
 
 group :development do
