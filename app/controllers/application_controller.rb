@@ -7,11 +7,11 @@ class ApplicationController < ActionController::API
     request.headers['Authorization']
   end
 
-  def bearer_token
+  def access_token
     if auth_header
       token = auth_header.split(' ')[1]
       begin
-        Auth.decode(token)
+        Auth.decode_access_token(token)
       rescue JWT::DecodeError
         nil
       end
@@ -19,11 +19,11 @@ class ApplicationController < ActionController::API
   end
 
   def current_user
-    @current_user ||= User.find_by(id: bearer_token['user']) if bearer_token
+    @current_user ||= User.find_by(id: access_token['user']) if access_token
   end
 
   def logged_in?
-    !!current_user
+    !!access_token
   end
 
   def authorized
