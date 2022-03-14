@@ -1,6 +1,4 @@
 Rails.application.routes.draw do
-  root 'hello#hello'
-
   jsonapi_resources :users, only: %i[create show]
 
   get 'profile', to: 'users#profile'
