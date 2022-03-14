@@ -3,7 +3,8 @@ class AuthController < ApplicationController
     user = User.find_by(email: auth_params[:email])
 
     if user.nil?
-      render json: { errors: [{ status: '404', detail: 'Not Found' }] }
+      errs = json_api_errors({ title: 'email not found', code: JSONAPI::RECORD_NOT_FOUND, status: :not_found })
+      render json: errs, status: :unauthorized
       return
     end
 
@@ -11,7 +12,8 @@ class AuthController < ApplicationController
       jwt = Auth.issue(user: user.id)
       render json: { data: { attributes: { access_token: jwt } } }
     else
-      render json: { errors: [{ status: '403', detail: 'Forbidden' }] }
+      render json: json_api_errors({ title: 'password mismatch', code: JSONAPI::BAD_REQUEST, status: :bad_request }),
+             status: :unauthorized
     end
   end
 
