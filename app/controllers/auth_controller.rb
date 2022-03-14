@@ -1,4 +1,6 @@
 class AuthController < ApplicationController
+  skip_before_action :authorized
+
   def login
     user = User.find_by(email: auth_params[:email])
 

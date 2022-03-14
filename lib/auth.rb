@@ -2,7 +2,7 @@ require 'jwt'
 
 class Auth
   ALGORITHM = 'HS256'
-  EXPIRES_IN = 1.minute
+  EXPIRES_IN = 100.minutes
 
   def self.issue(**payload)
     JWT.encode(payload.merge(claims), auth_secret, ALGORITHM)
