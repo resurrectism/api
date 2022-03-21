@@ -5,46 +5,43 @@ class AuthController < ApplicationController
     user = User.find_by(email: auth_params[:email])
 
     if user.nil?
-      errs = json_api_errors({ title: 'email not found', code: JSONAPI::RECORD_NOT_FOUND, status: :not_found })
-      render json: errs, status: :unauthorized
+      render json: json_api_errors({ title: 'email not found',
+                                     code: JSONAPI::RECORD_NOT_FOUND,
+                                     status: :not_found }),
+             status: :unauthorized
       return
     end
 
-    if user.authenticate(auth_params[:password])
-      # TODO: refactor into a method as it's used twice
-      new_access_token = Auth.issue_access_token(user: user.id)
-
-      base64_string = Auth.random_base64
-      new_refresh_token = Auth.issue_refresh_token(refresh_token: base64_string)
-      user.update(refresh_token: base64_string)
-
-      render json: { data: { attributes: { access_token: new_access_token, refresh_token: new_refresh_token } } }
-    else
-      # TODO: refactor with early return if not authenticated
-      render json: json_api_errors({ title: 'password mismatch', code: JSONAPI::BAD_REQUEST, status: :bad_request }),
+    unless user.authenticate(auth_params[:password])
+      render json: json_api_errors({ title: 'password mismatch',
+                                     code: JSONAPI::BAD_REQUEST,
+                                     status: :bad_request }),
              status: :unauthorized
+      return
     end
+
+    tokens, base64_string = issue_tokens(user)
+    user.update(refresh_token: base64_string)
+
+    render json: { data: { attributes: tokens } }
   end
 
   def refresh_token
     token = refresh_token_params[:refresh_token]
 
-    begin
-      decoded_refresh_token = Auth.decode_refresh_token(token)
-      user = User.find_by(refresh_token: decoded_refresh_token['refresh_token'])
-      user.update(refresh_token: nil)
+    decoded_refresh_token = Auth.decode_refresh_token(token)
+    user = User.find_by(refresh_token: decoded_refresh_token['refresh_token'])
+    user.update(refresh_token: nil)
 
-      new_access_token = Auth.issue_access_token(user: user.id)
+    tokens, base64_string = issue_tokens(user)
+    user.update(refresh_token: base64_string)
 
-      base64_string = Auth.random_base64
-      new_refresh_token = Auth.issue_refresh_token(refresh_token: base64_string)
-      user.update(refresh_token: base64_string)
-
-      render json: { data: { attributes: { access_token: new_access_token, refresh_token: new_refresh_token } } }
-    rescue JWT::DecodeError
-      render json: json_api_errors({ title: 'refresh_token is invalid', code: JSONAPI::BAD_REQUEST, status: :bad_request }),
-             status: :unauthorized
-    end
+    render json: { data: { attributes: tokens } }
+  rescue JWT::DecodeError
+    render json: json_api_errors({ title: 'refresh_token is invalid',
+                                   code: JSONAPI::BAD_REQUEST,
+                                   status: :bad_request }),
+           status: :unauthorized
   end
 
   def logout
@@ -60,5 +57,14 @@ class AuthController < ApplicationController
 
   def refresh_token_params
     params.require(:data).require(:attributes).permit(:refresh_token)
+  end
+
+  def issue_tokens(user)
+    access_token = Auth.issue_access_token(user: user.id)
+
+    base64_string = Auth.random_base64
+    refresh_token = Auth.issue_refresh_token(refresh_token: base64_string)
+
+    [{ access_token: access_token, refresh_token: refresh_token }, base64_string]
   end
 end
