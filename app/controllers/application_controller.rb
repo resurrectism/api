@@ -27,8 +27,7 @@ class ApplicationController < ActionController::API
   def authorized
     return if logged_in?
 
-    render json: json_api_errors(title: 'not logged in', code: JSONAPI::BAD_REQUEST, status: :bad_request),
-           status: :unauthorized
+    render json: json_api_bad_request('not logged in'), status: :unauthorized
   end
 
   def json_api_errors(*errs)

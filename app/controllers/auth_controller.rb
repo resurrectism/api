@@ -1,5 +1,5 @@
 class AuthController < ApplicationController
-  skip_before_action :authorized
+  skip_before_action :authorized, except: [:logout]
 
   def login
     user = User.find_by(email: auth_params[:email])

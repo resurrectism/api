@@ -10,11 +10,11 @@ class Auth
   end
 
   def self.issue_access_token(**payload)
-    JWT.encode(payload.merge(claims), auth_secret, ALGORITHM)
+    JWT.encode(claims.merge(payload), auth_secret, ALGORITHM)
   end
 
   def self.issue_refresh_token(**payload)
-    JWT.encode(payload.merge(refresh_token_claims), refresh_token_auth_secret, ALGORITHM)
+    JWT.encode(refresh_token_claims.merge(payload), refresh_token_auth_secret, ALGORITHM)
   end
 
   def self.decode_access_token(token)
