@@ -6,7 +6,7 @@ class User < ApplicationRecord
     'lowercase letter' => /(?=.*[a-z])/,
     'uppercase letter' => /(?=.*[A-Z])/,
     'symbol' => /(?=.*[[:^alnum:]])/
-  }
+  }.freeze
 
   validates :email, uniqueness: true, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validate :password_is_strong

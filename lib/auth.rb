@@ -1,7 +1,7 @@
 require 'jwt'
 
 class Auth
-  ALGORITHM = 'HS256'
+  ALGORITHM = 'HS256'.freeze
   EXPIRES_IN = 100.minutes
   REFRESH_TOKEN_EXPIRES_IN = 1.day
 
