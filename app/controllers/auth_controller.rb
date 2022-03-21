@@ -5,18 +5,12 @@ class AuthController < ApplicationController
     user = User.find_by(email: auth_params[:email])
 
     if user.nil?
-      render json: json_api_errors({ title: 'email not found',
-                                     code: JSONAPI::RECORD_NOT_FOUND,
-                                     status: :not_found }),
-             status: :unauthorized
+      render json: json_api_not_found('email not found'), status: :unauthorized
       return
     end
 
     unless user.authenticate(auth_params[:password])
-      render json: json_api_errors({ title: 'password mismatch',
-                                     code: JSONAPI::BAD_REQUEST,
-                                     status: :bad_request }),
-             status: :unauthorized
+      render json: json_api_bad_request('password mismatch'), status: :unauthorized
       return
     end
 
@@ -31,17 +25,15 @@ class AuthController < ApplicationController
 
     decoded_refresh_token = Auth.decode_refresh_token(token)
     user = User.find_by(refresh_token: decoded_refresh_token['refresh_token'])
-    user.update(refresh_token: nil)
+
+    raise InvalidRefreshTokenError if user.nil?
 
     tokens, base64_string = issue_tokens(user)
     user.update(refresh_token: base64_string)
 
     render json: { data: { attributes: tokens } }
-  rescue JWT::DecodeError
-    render json: json_api_errors({ title: 'refresh_token is invalid',
-                                   code: JSONAPI::BAD_REQUEST,
-                                   status: :bad_request }),
-           status: :unauthorized
+  rescue JWT::DecodeError, InvalidRefreshTokenError
+    render json: json_api_bad_request('refresh_token is invalid'), status: :unauthorized
   end
 
   def logout
@@ -67,4 +59,6 @@ class AuthController < ApplicationController
 
     [{ access_token: access_token, refresh_token: refresh_token }, base64_string]
   end
+
+  class InvalidRefreshTokenError < StandardError; end
 end

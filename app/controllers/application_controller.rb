@@ -34,4 +34,12 @@ class ApplicationController < ActionController::API
   def json_api_errors(*errs)
     { errors: errs.map { |err| JSONAPI::Error.new(err) } }
   end
+
+  def json_api_bad_request(title)
+    json_api_errors({ title: title, code: JSONAPI::BAD_REQUEST, status: :bad_request })
+  end
+
+  def json_api_not_found(title)
+    json_api_errors({ title: title, code: JSONAPI::RECORD_NOT_FOUND, status: :not_found })
+  end
 end
