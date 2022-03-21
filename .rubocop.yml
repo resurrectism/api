@@ -2,13 +2,27 @@ require:
   - rubocop-rspec
   - rubocop-rails
 
+AllCops:
+  NewCops: enable
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 Style/Documentation:
   Enabled: false
+Style/OpenStructUse:
+  Enabled: false
 
 Rails/FilePath:
+  Enabled: false
+Rails/LexicallyScopedActionFilter:
   Enabled: false
 
 RSpec/MultipleExpectations:
   Enabled: false
+
+Metrics/MethodLength:
+  Max: 20
+Metrics/BlockLength:
+  Enabled: false
+Metrics/AbcSize:
+  CountRepeatedAttributes: false

@@ -10,7 +10,7 @@ class ApplicationController < ActionController::API
   def access_token
     return unless auth_header
 
-    token = auth_header.split(' ')[1]
+    token = auth_header.split[1]
     Auth.decode_access_token(token)
   rescue JWT::DecodeError
     nil
