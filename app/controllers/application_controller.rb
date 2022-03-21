@@ -8,14 +8,12 @@ class ApplicationController < ActionController::API
   end
 
   def access_token
-    if auth_header
-      token = auth_header.split(' ')[1]
-      begin
-        Auth.decode_access_token(token)
-      rescue JWT::DecodeError
-        nil
-      end
-    end
+    return unless auth_header
+
+    token = auth_header.split(' ')[1]
+    Auth.decode_access_token(token)
+  rescue JWT::DecodeError
+    nil
   end
 
   def current_user
@@ -27,10 +25,10 @@ class ApplicationController < ActionController::API
   end
 
   def authorized
-    unless logged_in?
-      render json: json_api_errors(title: 'not logged in', code: JSONAPI::BAD_REQUEST, status: :bad_request),
-             status: :unauthorized
-    end
+    return if logged_in?
+
+    render json: json_api_errors(title: 'not logged in', code: JSONAPI::BAD_REQUEST, status: :bad_request),
+           status: :unauthorized
   end
 
   def json_api_errors(*errs)
