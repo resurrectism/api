@@ -1,6 +1,6 @@
 name: Api workflow
 
-on: 
+on:
   push:
     branches: [main]
   pull_request:
@@ -13,7 +13,7 @@ jobs:
     services:
       db:
         image: postgres:10.0
-        ports: ['5432:5432']
+        ports: ["5432:5432"]
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: ""
@@ -31,6 +31,7 @@ jobs:
       RAILS_ENV: test
       PGHOST: localhost
       PGUSER: postgres
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
 
     steps:
       - uses: actions/checkout@v2
@@ -46,5 +47,4 @@ jobs:
       - name: Build and run tests
         run: |
           bundle exec rails db:prepare
-          bundle exec rspec 
-
+          bundle exec rspec
