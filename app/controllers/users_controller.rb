@@ -1,8 +1,25 @@
 class UsersController < ApplicationController
   skip_before_action :authorized, only: [:create]
 
+  ALLOWED_PARAMS = %i[email password password_confirmation].freeze
+
+  def create
+    @user = User.create(user_create_params)
+    if @user.valid?
+      render status: :created
+    else
+      render json: json_api_errors({ title: 'user could not be created' }), status: :unprocessable_entity
+    end
+  end
+
   def profile
-    resource = JSONAPI::ResourceSerializer.new(UserResource).object_hash(UserResource.new(current_user, nil), nil)
-    render json: { data: resource }, status: :ok
+    serializable_hash = UserSerializer.new(current_user).serializable_hash
+    serializable_hash[:data].delete(:id)
+
+    render json: serializable_hash.to_json, status: :ok
+  end
+
+  def user_create_params
+    params.require(:user).permit(*ALLOWED_PARAMS)
   end
 end

@@ -1,7 +1,6 @@
 class ApplicationController < ActionController::API
-  include JSONAPI::ActsAsResourceController
-
   before_action :authorized
+  before_action :convert_json_api_request, only: %i[create update]
 
   def auth_header
     request.headers['Authorization']
@@ -30,15 +29,21 @@ class ApplicationController < ActionController::API
     render json: json_api_bad_request('not logged in'), status: :unauthorized
   end
 
+  def convert_json_api_request
+    return if request.headers['Content-Type'] != 'application/vnd.api+json'
+
+    ConvertJsonApiParams.call(params)
+  end
+
   def json_api_errors(*errs)
-    { errors: errs.map { |err| JSONAPI::Error.new(err) } }
+    { errors: errs }
   end
 
   def json_api_bad_request(title)
-    json_api_errors({ title: title, code: JSONAPI::BAD_REQUEST, status: :bad_request })
+    json_api_errors({ title: title, status: :bad_request })
   end
 
   def json_api_not_found(title)
-    json_api_errors({ title: title, code: JSONAPI::RECORD_NOT_FOUND, status: :not_found })
+    json_api_errors({ title: title, status: :not_found })
   end
 end
