@@ -42,7 +42,7 @@ jobs:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
       - name: Check Linting and Formatting
-        run: bundle exec rake lint:check
+        run: bundle exec rubocop
 
       - name: Build and run tests
         run: |
