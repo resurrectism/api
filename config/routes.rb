@@ -1,7 +1,11 @@
 Rails.application.routes.draw do
-  root 'hello#hello'
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  jsonapi_resources :users, only: %i[create]
 
-  # Defines the root path route ("/")
-  # root "articles#index"
+  get 'profile', to: 'users#profile'
+
+  scope 'auth' do
+    post 'login', to: 'auth#login'
+    post 'refresh_token', to: 'auth#refresh_token'
+    post 'logout', to: 'auth#logout'
+  end
 end
