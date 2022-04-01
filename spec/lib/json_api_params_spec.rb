@@ -15,9 +15,9 @@ describe JsonApiParams do
           type: 'user',
           attributes: {
             name: 'Johnny',
-            email: 'johnny@example.com'
-          }
-        }
+            email: 'johnny@example.com',
+          },
+        },
       }
     end
 
@@ -33,8 +33,8 @@ describe JsonApiParams do
     let(:params_data) do
       {
         data: {
-          type: 'user'
-        }
+          type: 'user',
+        },
       }
     end
 
@@ -48,8 +48,8 @@ describe JsonApiParams do
     let(:params_data) do
       {
         animal: {
-          name: 'test'
-        }
+          name: 'test',
+        },
       }
     end
 

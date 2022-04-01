@@ -11,6 +11,8 @@ Style/Documentation:
   Enabled: false
 Style/OpenStructUse:
   Enabled: false
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: "consistent_comma"
 
 Rails/FilePath:
   Enabled: false

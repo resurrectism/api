@@ -5,7 +5,7 @@ class User < ApplicationRecord
     'number' => /(?=.*\d)/,
     'lowercase letter' => /(?=.*[a-z])/,
     'uppercase letter' => /(?=.*[A-Z])/,
-    'symbol' => /(?=.*[[:^alnum:]])/
+    'symbol' => /(?=.*[[:^alnum:]])/,
   }.freeze
 
   validates :email, uniqueness: true, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }

@@ -29,7 +29,7 @@ RSpec.describe 'Users', type: :request do
         {
           email: 'someone@email.com',
           password: '1234567@aM',
-          password_confirmation: '1234567@aM'
+          password_confirmation: '1234567@aM',
         }
       end
 
