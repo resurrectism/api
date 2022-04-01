@@ -1,5 +1,9 @@
 class AuthController < ApplicationController
   skip_before_action :authorized, except: [:logout]
+  before_action :convert_json_api_request, only: %i[login refresh_token]
+
+  ALLOWED_LOGIN_PARAMS = %i[email password].freeze
+  ALLOWED_REFRESH_TOKEN_PARAMS = %i[refresh_token].freeze
 
   def login
     user = User.find_by(email: auth_params[:email])
@@ -44,11 +48,11 @@ class AuthController < ApplicationController
   private
 
   def auth_params
-    params.require(:data).require(:attributes).permit(:email, :password)
+    params.require(:user).permit(*ALLOWED_LOGIN_PARAMS)
   end
 
   def refresh_token_params
-    params.require(:data).require(:attributes).permit(:refresh_token)
+    params.require(:user).permit(*ALLOWED_REFRESH_TOKEN_PARAMS)
   end
 
   def issue_tokens(user)

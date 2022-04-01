@@ -6,7 +6,7 @@ RSpec.describe 'Auths', type: :request do
   let(:headers) { {} }
   let(:attributes) { {} }
 
-  describe 'POST /login' do
+  describe 'POST /users/login' do
     let(:email) { 'someone@email.com' }
     let(:password) { '1234567@aM' }
 
@@ -15,7 +15,7 @@ RSpec.describe 'Auths', type: :request do
 
       headers = { 'Content-Type' => 'application/vnd.api+json' }
       params = { data: { attributes: attributes } }
-      post login_path, headers: headers, params: params.to_json
+      post login_users_path, headers: headers, params: params.to_json
     end
 
     context 'when called with a non-existent email' do
@@ -37,7 +37,7 @@ RSpec.describe 'Auths', type: :request do
     end
   end
 
-  describe 'POST /refresh_token' do
+  describe 'POST /users/refresh_token' do
     let(:refresh_token) { nil }
 
     before do
@@ -45,7 +45,7 @@ RSpec.describe 'Auths', type: :request do
 
       headers = { 'Content-Type' => 'application/vnd.api+json' }
       params = { data: { attributes: attributes } }
-      post refresh_token_path, headers: headers, params: params.to_json
+      post refresh_token_users_path, headers: headers, params: params.to_json
     end
 
     context 'when called with a valid but non-existent refresh_token' do
@@ -73,10 +73,10 @@ RSpec.describe 'Auths', type: :request do
     end
   end
 
-  describe 'POST /logout' do
+  describe 'POST /users/logout' do
     let(:headers) { {} }
 
-    before { post logout_path, headers: headers }
+    before { post logout_users_path, headers: headers }
 
     context 'when called without a bearer token' do
       it { is_expected.to have_http_status(:unauthorized) }
