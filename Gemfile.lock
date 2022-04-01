@@ -225,7 +225,7 @@ DEPENDENCIES
   jsonapi-serializer
   jwt
   pg
-  puma (~> 5.0)
+  puma (~> 5.6)
   rack-cors
   rails (~> 7.0.2, >= 7.0.2.2)
   rspec-rails (~> 5.0.0)
