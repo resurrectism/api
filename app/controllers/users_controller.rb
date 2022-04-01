@@ -4,11 +4,11 @@ class UsersController < ApplicationController
   ALLOWED_PARAMS = %i[email password password_confirmation].freeze
 
   def create
-    @user = User.create(user_create_params)
-    if @user.valid?
+    user = User.create(user_create_params)
+    if user.valid?
       render status: :created
     else
-      render json: json_api_errors({ title: 'user could not be created' }), status: :unprocessable_entity
+      render json: ErrorSerializer.new(user).as_json, status: :unprocessable_entity
     end
   end
 
