@@ -32,7 +32,7 @@ class ApplicationController < ActionController::API
   def convert_json_api_request
     return if request.headers['Content-Type'] != 'application/vnd.api+json'
 
-    ConvertJsonApiParams.call(params)
+    JsonApiParams.convert(params)
   end
 
   def json_api_errors(*errs)

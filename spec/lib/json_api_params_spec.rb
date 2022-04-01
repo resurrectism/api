@@ -1,6 +1,6 @@
-require 'convert_json_api_params'
+require 'json_api_params'
 
-describe ConvertJsonApiParams do
+describe JsonApiParams do
   let(:params) { ActionController::Parameters.new(params_data) }
 
   def expect_params(converted_params, expected_params)
@@ -22,7 +22,7 @@ describe ConvertJsonApiParams do
     end
 
     it 'adds the converted JSON API parameters to the params hash' do
-      described_class.call(params)
+      described_class.convert(params)
       expect_params(params['user'],
                     'name' => 'Johnny',
                     'email' => 'johnny@example.com')
@@ -39,7 +39,7 @@ describe ConvertJsonApiParams do
     end
 
     it 'adds an empty hash' do
-      described_class.call(params)
+      described_class.convert(params)
       expect_params(params['user'], {})
     end
   end
