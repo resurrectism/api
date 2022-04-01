@@ -8,12 +8,8 @@ RSpec.describe 'Users', type: :request do
 
     before do
       headers = { 'Content-Type' => 'application/vnd.api+json' }
-      params = { data: { type: 'users', attributes: attributes } }
+      params = { data: { type: 'user', attributes: attributes } }
       post users_path, headers: headers, params: params.to_json
-    end
-
-    context 'when called without an email' do
-      it { is_expected.to have_http_status(:unprocessable_entity) }
     end
 
     context 'when called without a password' do
