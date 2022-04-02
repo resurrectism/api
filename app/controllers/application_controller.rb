@@ -26,24 +26,12 @@ class ApplicationController < ActionController::API
   def authorized
     return if logged_in?
 
-    render json: json_api_bad_request('not logged in'), status: :unauthorized
+    render status: :unauthorized
   end
 
   def convert_json_api_request
     return if request.headers['Content-Type'] != 'application/vnd.api+json'
 
     JsonApiParams.convert(params)
-  end
-
-  def json_api_errors(*errs)
-    { errors: errs }
-  end
-
-  def json_api_bad_request(title)
-    json_api_errors({ title: title, status: :bad_request })
-  end
-
-  def json_api_not_found(title)
-    json_api_errors({ title: title, status: :not_found })
   end
 end

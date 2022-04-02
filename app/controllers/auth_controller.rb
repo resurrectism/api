@@ -8,13 +8,8 @@ class AuthController < ApplicationController
   def login
     user = User.find_by(email: auth_params[:email])
 
-    if user.nil?
-      render json: json_api_not_found('email not found'), status: :unauthorized
-      return
-    end
-
-    unless user.authenticate(auth_params[:password])
-      render json: json_api_bad_request('password mismatch'), status: :unauthorized
+    if user.nil? || !user.authenticate(auth_params[:password])
+      render status: :unauthorized
       return
     end
 
@@ -37,7 +32,7 @@ class AuthController < ApplicationController
 
     render json: { data: { attributes: tokens } }
   rescue JWT::DecodeError, InvalidRefreshTokenError
-    render json: json_api_bad_request('refresh_token is invalid'), status: :unauthorized
+    render status: :unauthorized
   end
 
   def logout
