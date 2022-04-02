@@ -14,7 +14,7 @@ RSpec.describe 'Auths', type: :request do
       Fabricate(:user, email: email, password: password, password_confirmation: password)
 
       headers = { 'Content-Type' => 'application/vnd.api+json' }
-      params = { data: { attributes: attributes } }
+      params = { data: { type: 'user', attributes: attributes } }
       post login_users_path, headers: headers, params: params.to_json
     end
 
@@ -44,7 +44,7 @@ RSpec.describe 'Auths', type: :request do
       Fabricate(:user, refresh_token: refresh_token)
 
       headers = { 'Content-Type' => 'application/vnd.api+json' }
-      params = { data: { attributes: attributes } }
+      params = { data: { type: 'user', attributes: attributes } }
       post refresh_token_users_path, headers: headers, params: params.to_json
     end
 
