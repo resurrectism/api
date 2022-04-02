@@ -8,7 +8,7 @@ class UsersController < ApplicationController
     if user.valid?
       render status: :created
     else
-      render json: ErrorSerializer.new(user).as_json, status: :unprocessable_entity
+      render json: ModelErrorSerializer.new(user).as_json, status: :unprocessable_entity
     end
   end
 
