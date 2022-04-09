@@ -17,7 +17,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: ""
-          POSTGRES_DB: resurrect_test
+          POSTGRES_DB: resurrectism_test
         # needed because the postgres container does not provide a healthcheck
         # tmpfs makes DB faster by using RAM
         options: >-
