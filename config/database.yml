@@ -21,3 +21,4 @@ test:
 production:
   <<: *default
   database: resurrect_production
+  url: <%= ENV['DATABASE_URL'] %>
