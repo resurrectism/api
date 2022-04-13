@@ -1,9 +1,18 @@
 class AuthController < ApplicationController
-  skip_before_action :authorized, except: [:logout]
+  skip_before_action :authorized
   before_action :convert_json_api_request, only: %i[login refresh_token]
 
   ALLOWED_LOGIN_PARAMS = %i[email password].freeze
   ALLOWED_REFRESH_TOKEN_PARAMS = %i[refresh_token].freeze
+
+  REFRESH_TOKEN_PATH = %r{/users/(logout|refresh_token)}.freeze
+
+  COMMON_COOKIE_OPTIONS = {
+    domain: Rails.configuration.client_domain,
+    httponly: true,
+    secure: Rails.env.production?,
+    same_site: :lax,
+  }.freeze
 
   def login
     user = User.find_by(email: auth_params[:email])
@@ -15,6 +24,8 @@ class AuthController < ApplicationController
 
     tokens, base64_string = issue_tokens(user)
     user.update(refresh_token: base64_string)
+
+    auth_cookies_set(tokens)
 
     render json: { data: { attributes: tokens } }
   end
@@ -36,11 +47,26 @@ class AuthController < ApplicationController
   end
 
   def logout
-    # TODO: think about refactoring this into a method on the user
-    current_user.update(refresh_token: nil)
+    current_user&.update(refresh_token: nil)
+
+    cookies.delete(:access_token, domain: Rails.configuration.client_domain)
+    cookies.delete(:refresh_token, domain: Rails.configuration.client_domain, path: REFRESH_TOKEN_PATH)
   end
 
   private
+
+  def auth_cookies_set(tokens)
+    cookies.encrypted[:access_token] = {
+      value: tokens[:access_token],
+      expires: Auth::EXPIRES_IN,
+    }.merge(COMMON_COOKIE_OPTIONS)
+
+    cookies.encrypted[:refresh_token] = {
+      value: tokens[:refresh_token],
+      expires: Auth::REFRESH_TOKEN_EXPIRES_IN,
+      path: REFRESH_TOKEN_PATH,
+    }.merge(COMMON_COOKIE_OPTIONS)
+  end
 
   def auth_params
     params.require(:user).permit(*ALLOWED_LOGIN_PARAMS)

@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::API
+  include ActionController::Cookies
+
   before_action :authorized
   before_action :convert_json_api_request, only: %i[create update]
 
@@ -7,10 +9,19 @@ class ApplicationController < ActionController::API
   end
 
   def access_token
+    decode_access_token_from_header || decode_access_token_from_cookie
+  end
+
+  def decode_access_token_from_header
     return unless auth_header
 
-    token = auth_header.split[1]
-    Auth.decode_access_token(token)
+    Auth.decode_access_token(auth_header.split.at(1))
+  rescue JWT::DecodeError
+    nil
+  end
+
+  def decode_access_token_from_cookie
+    Auth.decode_access_token(cookies.encrypted[:access_token])
   rescue JWT::DecodeError
     nil
   end
