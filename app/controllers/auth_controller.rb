@@ -1,5 +1,5 @@
 class AuthController < ApplicationController
-  skip_before_action :authorized
+  skip_before_action :authorized, except: [:logout]
   before_action :convert_json_api_request, only: %i[login refresh_token]
 
   ALLOWED_LOGIN_PARAMS = %i[email password].freeze
