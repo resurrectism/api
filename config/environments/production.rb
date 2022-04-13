@@ -83,4 +83,10 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  # Used for setting the domain of the cookies
+  config.client_domain = '.resurrectism.space'
+
+  # Prevents from DNS rebinding attack
+  config.host_authorization = { exclude: ->(request) { request.host =~ /api\.resurrectism\.space/ } }
 end

@@ -61,4 +61,10 @@ Rails.application.configure do
 
   # Uncomment if you wish to allow Action Cable access from any origin.
   # config.action_cable.disable_request_forgery_protection = true
+
+  # Used for setting the domain of the cookies
+  config.client_domain = '.resurrectism.test'
+
+  # Prevents from DNS rebinding attack
+  config.host_authorization = { exclude: ->(request) { request.host =~ /api\.resurrectism\.test/ } }
 end
