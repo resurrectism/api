@@ -20,6 +20,13 @@ gem install bundler
 #### PostgreSQL
 Having a running [PostgreSQL](https://www.postgresql.org/) database server is necessary to run the API
 
+### Hosts
+The only way to access the API locally is through http://api.resurrectism.test:3000, because we guard against [DNS rebinding](https://en.wikipedia.org/wiki/DNS_rebinding) attacks so it will be necessary to include these two lines in your `/etc/hosts` file:
+```
+127.0.0.1 resurrectism.test  # Necessary only for the frontend-client
+127.0.0.1 api.resurrectism.test
+```
+
 ### Running the API 
 
 Install dependencies:
