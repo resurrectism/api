@@ -32,8 +32,9 @@ class AuthController < ApplicationController
 
   def refresh_token
     token = decode_refresh_token_from_params || decode_refresh_token_from_cookie
-    user = User.find_by(refresh_token: token['refresh_token'])
+    raise InvalidRefreshTokenError if token.nil?
 
+    user = User.find_by(refresh_token: token['refresh_token'])
     raise InvalidRefreshTokenError if user.nil?
 
     tokens, base64_string = issue_tokens(user)
@@ -72,10 +73,6 @@ class AuthController < ApplicationController
     params.require(:user).permit(*ALLOWED_LOGIN_PARAMS)
   end
 
-  def refresh_token_params
-    params.require(:user).permit(*ALLOWED_REFRESH_TOKEN_PARAMS)
-  end
-
   def issue_tokens(user)
     access_token = Auth.issue_access_token(user: user.id)
 
@@ -86,7 +83,7 @@ class AuthController < ApplicationController
   end
 
   def decode_refresh_token_from_params
-    Auth.decode_refresh_token(refresh_token_params[:refresh_token])
+    Auth.decode_refresh_token(params.dig(:user, :refresh_token))
   rescue JWT::DecodeError
     nil
   end
