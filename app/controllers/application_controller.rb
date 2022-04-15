@@ -12,20 +12,6 @@ class ApplicationController < ActionController::API
     decode_access_token_from_header || decode_access_token_from_cookie
   end
 
-  def decode_access_token_from_header
-    return unless auth_header
-
-    Auth.decode_access_token(auth_header.split.at(1))
-  rescue JWT::DecodeError
-    nil
-  end
-
-  def decode_access_token_from_cookie
-    Auth.decode_access_token(cookies.encrypted[:access_token])
-  rescue JWT::DecodeError
-    nil
-  end
-
   def current_user
     @current_user ||= User.find_by(id: access_token['user']) if access_token
   end
@@ -44,5 +30,21 @@ class ApplicationController < ActionController::API
     return if request.headers['Content-Type'] != 'application/vnd.api+json'
 
     JsonApiParams.convert(params)
+  end
+
+  private
+
+  def decode_access_token_from_header
+    return unless auth_header
+
+    Auth.decode_access_token(auth_header.split.at(1))
+  rescue JWT::DecodeError
+    nil
+  end
+
+  def decode_access_token_from_cookie
+    Auth.decode_access_token(cookies.encrypted[:access_token])
+  rescue JWT::DecodeError
+    nil
   end
 end
