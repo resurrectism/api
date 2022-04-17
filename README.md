@@ -61,6 +61,14 @@ Fix (if possible) linting errors with:
 bundle exec rubocop -A 
 ```
 
+### Security
+
+Run [brakeman](https://github.com/presidentbeef/brakeman) to check
+the code for security vulenerabilites:
+```sh
+bundle exec brakeman 
+```
+
 ### Testing
 
 Local testing requires an active database connection.
@@ -77,6 +85,6 @@ bundle exec rspec ./path/to/file
 
 ## Deployment
 
-Our `main` branch is protected and new commits can only be added via pull request. Pull requests need to be approved and must pass all of the CI checks which include proper formatting, absence of linting errors and passing tests.
+Our `main` branch is protected and new commits can only be added via pull request. Pull requests need to be approved and must pass all of the CI checks which include proper formatting, absence of linting errors and security vulnerabilities and of course passing tests.
 
 The API is automatically deployed on every new commit to `main` by [render](https://render.com/)
