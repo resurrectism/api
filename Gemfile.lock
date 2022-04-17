@@ -202,6 +202,7 @@ GEM
     rubocop-rspec (2.9.0)
       rubocop (~> 1.19)
     ruby-progressbar (1.11.0)
+    secure_headers (6.3.3)
     strscan (3.0.1)
     thor (1.2.1)
     timeout (0.2.0)
@@ -232,6 +233,7 @@ DEPENDENCIES
   rubocop
   rubocop-rails
   rubocop-rspec
+  secure_headers
   tzinfo-data
 
 RUBY VERSION
