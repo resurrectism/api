@@ -1,0 +1,37 @@
+name: Reviewdog workflow
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+      - name: Rubocop
+        uses: reviewdog/action-rubocop@v2
+        with:
+          rubocop_version: gemfile
+          use_bundler: true
+
+      - name: Brakeman
+        uses: reviewdog/action-brakeman@v2
+        with:
+          brakeman_version: gemfile
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          brakeman_flags: '--no-exit-on-warn --no-exit-on-error'
+
+      - name: Build and run tests
+        run: |
+          bundle exec rails db:prepare
+          bundle exec rspec

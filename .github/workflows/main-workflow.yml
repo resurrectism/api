@@ -41,18 +41,8 @@ jobs:
         with:
           bundler-cache: true # runs 'bundle install' and caches installed gems automatically
 
-      - name: Rubocop
-        uses: reviewdog/action-rubocop@v2
-        with:
-          rubocop_version: gemfile
-          use_bundler: true
-
-      - name: Brakeman
-        uses: reviewdog/action-brakeman@v2
-        with:
-          brakeman_version: gemfile
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          brakeman_flags: '--no-exit-on-warn --no-exit-on-error'
+      - name: Check Linting and Formatting
+        run: bundle exec rubocop
 
       - name: Build and run tests
         run: |
