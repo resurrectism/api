@@ -10,4 +10,5 @@ Rails.application.routes.draw do
   end
 
   resources :tracks, only: %i[index show]
+  resources :exercises, only: %i[index show]
 end
