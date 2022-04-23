@@ -1,6 +1,12 @@
 # Resurrectism API
 
-Live version running on https://api.resurrectism.space  
+Live version running on https://api.resurrectism.space
+
+## Cloud Infrastructure
+
+Our api service is hosted on [render](https://render.com/) which is a PaaS (Platform-as-a-Service) Cloud Provider. The diagram below shows the interaction between the different components of our application
+
+![Cloud Infrastructure](./cloud_infrastructure.png)
 
 ## Local Development
 
@@ -58,7 +64,7 @@ bundle exec rubocop
 
 Fix (if possible) linting errors with:
 ```sh
-bundle exec rubocop -A 
+bundle exec rubocop -A
 ```
 
 ### Security
@@ -66,7 +72,7 @@ bundle exec rubocop -A
 Run [brakeman](https://github.com/presidentbeef/brakeman) to check
 the code for security vulenerabilites:
 ```sh
-bundle exec brakeman 
+bundle exec brakeman
 ```
 
 ### Testing
