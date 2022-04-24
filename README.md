@@ -8,6 +8,12 @@ Our api service is hosted on [render](https://render.com/) which is a PaaS (Plat
 
 ![Cloud Infrastructure](https://github.com/resurrectism/api/blob/683c96958c1dc1a46d38e7a4bd3429c88d5678b5/cloud_Infrastructure.png?raw=true)
 
+## Continious Integration / Continious Deployment 
+
+We are using Github Actions to lint, format and test our api service before merging to main. Each new commit to main triggers a new deploy on [render](https://render.com/). The diagram below shows the different steps of our CI/CD pipeline
+
+![CI CD](./API_CI_CD.png)
+
 ## Local Development
 
 ### Prerequisites
