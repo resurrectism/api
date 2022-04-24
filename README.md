@@ -6,7 +6,7 @@ Live version running on https://api.resurrectism.space
 
 Our api service is hosted on [render](https://render.com/) which is a PaaS (Platform-as-a-Service) Cloud Provider. The diagram below shows the interaction between the different components of our application
 
-![Cloud Infrastructure](https://github.com/resurrectism/api/blob/683c96958c1dc1a46d38e7a4bd3429c88d5678b5/cloud_Infrastructure.png?raw=true)
+![Cloud Infrastructure](./cloud_Infrastructure.png)
 
 ## Continious Integration / Continious Deployment 
 
