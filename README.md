@@ -10,7 +10,9 @@ Our api service is hosted on [render](https://render.com/) which is a PaaS (Plat
 
 ## Continious Integration / Continious Deployment 
 
-We are using Github Actions to lint, format and test our api service before merging to main. Each new commit to main triggers a new deploy on [render](https://render.com/). The diagram below shows the different steps of our CI/CD pipeline
+Our `main` branch is protected and new commits can only be added via pull request. Pull requests need to be approved and must pass all of the CI (Github Actions) checks which include proper formatting, absence of linting errors and security vulnerabilities and of course passing tests.
+
+Each new commit to main triggers a new deploy on [render](https://render.com/). The diagram below shows the different steps of our CI/CD pipeline
 
 ![CI CD](./API_CI_CD.png)
 
@@ -94,9 +96,3 @@ Run specific spec file with
 ```sh
 bundle exec rspec ./path/to/file
 ```
-
-## Deployment
-
-Our `main` branch is protected and new commits can only be added via pull request. Pull requests need to be approved and must pass all of the CI checks which include proper formatting, absence of linting errors and security vulnerabilities and of course passing tests.
-
-The API is automatically deployed on every new commit to `main` by [render](https://render.com/)
