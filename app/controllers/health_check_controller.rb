@@ -1,5 +1,6 @@
 class HealthCheckController < ApplicationController
   skip_before_action :authorized
+  before_action :no_store
 
   def ping
     render status: :ok
