@@ -70,4 +70,6 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           git fetch
+          git checkout main
+          git pull
           git push origin main main:production
