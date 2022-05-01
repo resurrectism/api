@@ -11,4 +11,7 @@ Rails.application.routes.draw do
       post 'logout', to: 'auth#logout'
     end
   end
+
+  resources :tracks, only: %i[index show]
+  resources :exercises, only: %i[index show]
 end
