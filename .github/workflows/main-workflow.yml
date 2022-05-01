@@ -48,3 +48,23 @@ jobs:
         run: |
           bundle exec rails db:prepare
           bundle exec rspec
+
+      - name: Audit Gemfile against advisory database
+        run: |
+          gem install bundler-audit
+          bundle-audit
+
+  production-deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: lint-test
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # otherwise, there would be errors pushing refs to the destination repository.
+
+      - name: Push main to production
+        run: |
+          git push origin main main:production
