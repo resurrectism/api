@@ -69,4 +69,5 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
+          git fetch
           git push origin main main:production
