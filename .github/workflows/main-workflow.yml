@@ -48,3 +48,8 @@ jobs:
         run: |
           bundle exec rails db:prepare
           bundle exec rspec
+
+      - name: Audit Gemfile against advisory database
+        run: |
+          gem install bundler-audit
+          bundle-audit
