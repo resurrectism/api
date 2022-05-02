@@ -50,7 +50,7 @@ Measures:
 
 - [x] Frontend only allows access to authenticated pages for authenticated users. (even if a user bypasses the frontend check, the data will not be loaded since the API will return an `Unauthorized` Status Code)
 
-### A02: Cryptographic failures:
+### [A02 Cryptographic failures](https://owasp.org/Top10/A02_2021-Cryptographic_Failures/)
 
 #### Transmission of data in clear text
 
@@ -66,7 +66,7 @@ Measures:
 
 - [x] The JWT library uses the HS256 symmetric signing method which can be [brute-forced](https://auth0.com/blog/brute-forcing-hs256-is-possible-the-importance-of-using-strong-keys-to-sign-jwts/) with small- and medium-sized keys (below 256 bits). We are protected against it since our secrets are 128 characters long which is `128*8=1024` bits in total.
 
-### A03: Injection
+### [A03 Injection](https://owasp.org/Top10/A03_2021-Injection/)
 
 #### SQL Injection:
 
@@ -80,7 +80,7 @@ Measures:
 
 - [x] We are protected against all types of XSS (Reflected, Stored or DOM-based) because React doesn't render strings as html content. One has to explicitly use `dangerouslySetInnerHTML`, which of course we don't.
 
-### A04 Insecure Design
+### [A04 Insecure Design](https://owasp.org/Top10/A04_2021-Insecure_Design/)
 
 #### Generation of Error Message Containing Sensitive Information
 
@@ -88,7 +88,7 @@ Measures:
 
 - [x] For login specifically, we do not respond with the reason for unsuccessful login (e.g. email already exists, or password mismatch, or non-existent user) so an attacker cannot gain more context from failed login attempts.
 
-### A05: Security Misconfiguration
+### [A05 Security Misconfiguration](https://owasp.org/Top10/A05_2021-Security_Misconfiguration/)
 
 #### Error handling reveals stack traces or other overly informative error messages to users
 
@@ -116,13 +116,13 @@ Measures:
 
 - [x] [Brakeman](https://github.com/presidentbeef/brakeman) is a static analysis tool which checks Ruby on Rails applications for security vulnerabilities. It is used in the CI pipeline for PRs.
 
-### A06 Vulnerable and Outdated Components
+### [A06 Vulnerable and Outdated Components](https://owasp.org/Top10/A06_2021-Vulnerable_and_Outdated_Components/)
 
 Measures:
 
 - [x] GitHub's builtin [dependabot](https://github.com/dependabot) feature notifies us of security vulnerabilities in our dependencies and how to fix them.
 
-### A07 Identification and Authentication Failures
+### [A07 Identification and Authentication Failures](https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/)
 
 #### Permits brute force or other automated attacks
 
@@ -160,7 +160,7 @@ Measures:
 
 - [ ] Lifetime for access tokens should be shorter (10-20 minutes)
 
-### A08 Software and Data Integrity Failures
+### [A08 Software and Data Integrity Failures](https://owasp.org/Top10/A08_2021-Software_and_Data_Integrity_Failures/)
 
 #### Missing integrity check for dependencies
 
@@ -174,7 +174,7 @@ Measures:
 
 - [x] [Brakeman](https://github.com/presidentbeef/brakeman) is a static analysis tool which checks Ruby on Rails applications for security vulnerabilities. It is used in the Rails CI pipeline for PRs.
 
-### A09 Security Logging and Monitoring Failures
+### [A09 Security Logging and Monitoring Failures](https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/)
 
 We have to look into implementing measures for the following potential threats:
 
