@@ -122,6 +122,8 @@ Measures:
 
 - [x] GitHub's builtin [dependabot](https://github.com/dependabot) feature notifies us of security vulnerabilities in our dependencies and how to fix them.
 
+- [x] Use `bundle-audit` in the Rails CI pipeline to check the Gemfile.lock against the advisory database
+
 ### [A07 Identification and Authentication Failures](https://owasp.org/Top10/A07_2021-Identification_and_Authentication_Failures/)
 
 #### Permits brute force or other automated attacks
@@ -171,8 +173,6 @@ Measures:
 - [ ] Use `bundle --trust-policy HighSecurity` in the Rails CI pipeline
 
 - [x] GitHub's builtin dependabot feature notifies us of security vulnerabilities in our dependencies and how to fix them.
-
-- [x] [Brakeman](https://github.com/presidentbeef/brakeman) is a static analysis tool which checks Ruby on Rails applications for security vulnerabilities. It is used in the Rails CI pipeline for PRs.
 
 ### [A09 Security Logging and Monitoring Failures](https://owasp.org/Top10/A09_2021-Security_Logging_and_Monitoring_Failures/)
 
