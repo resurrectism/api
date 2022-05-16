@@ -180,8 +180,14 @@ We have to look into implementing measures for the following potential threats:
 
 #### Auditable events, such as logins, failed logins, and high-value transactions, are not logged
 
+- [ ] Logtail can be set up to monitor for such auditable events
+
 #### Logs of applications and APIs are not monitored for suspicious activity
 
+- [ ] Logtail can be set up to monitor for irregularities and to create alerts for suspicious activity.
+
 #### Logs are only stored locally
+
+- [x] We use Logtail for log storage
 
 #### Appropriate alerting thresholds and response escalation processes are not in place or effective
