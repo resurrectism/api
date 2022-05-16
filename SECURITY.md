@@ -38,7 +38,7 @@ Measures:
 
 Measures:
 
-- [x] CORS (see above)
+- [x] ~~CORS (see above)~~ - doesn't really protect against it since event though the browser is not allowed to access the resources, the request is still processed on the server
 
 - [x] State-changing operations are only done with `PUT/PATCH/POST/DELETE` requests
 
