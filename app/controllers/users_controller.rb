@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   def create
     user = User.create(user_create_params)
     if user.valid?
-      render status: :created
+        render status: :created
     else
       render json: ModelErrorSerializer.new(user).as_json, status: :unprocessable_entity
     end
